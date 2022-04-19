@@ -1,0 +1,46 @@
+{
+    "tasks": {
+        "task1": {
+            "click": {
+                "selector": "xpath or query",
+                "by": "id",
+                "timeout": 1
+            },
+            "sleep": {
+                "time": 100
+            },
+            "is_visible": {
+                "selector": "xpath or query",
+                "by": "id",
+                "timeout": "10"
+            },
+            "send": {
+                "element": {
+                    "selector": "xpath or query",
+                    "by": "id"
+                },
+                "value": 100
+            },
+            "get": {
+                "url": "some_url"
+            },
+            "post": {
+                "url": "someurl",
+                "headers": {},
+                "data": {}
+            }
+        },
+        "task2": {
+            "sleep": {
+                "seconds": 5
+            }
+        }
+    },
+    "execution": [
+        "task1",
+        "task2"
+    ],
+    "properties": {
+        "timeout": 10
+    }
+}

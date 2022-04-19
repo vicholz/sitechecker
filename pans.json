@@ -1,0 +1,33 @@
+{
+    "tasks": {
+        "Check Pans": {
+            "get": {
+                "url": "https://www.samsclub.com/p/members-mark-11pc-modern-ceramic-cookware-set/prod26140161"
+            },
+            "is_visible": {
+                "selector": "span.variant-swatch",
+                "by": "css selector",
+                "timeout": 10
+            },
+            "click": {
+                "selector": "//span[@class='variant-swatch' and contains(text(),'Cream')]/../..",
+                "by": "xpath",
+                "timeout": 10
+            },
+            "has_inner_text": {
+                "element":{
+                    "selector": "button.sc-pc-out-of-stock-button > span",
+                    "by": "css selector",
+                    "timeout": 10
+                },
+                "value": "Out of stock"
+            }
+        }
+    },
+    "execution": [
+        "Check Pans"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}
