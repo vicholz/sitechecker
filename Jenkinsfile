@@ -24,7 +24,7 @@ pipeline {
 set +x
 
 if [ -n "${DATA}" ]; then
-    DATA_PARAM="--url ${DATA}"
+    DATA_PARAM="--data ${DATA}"
 fi
 
 if [ "${VERBOSE}" == "true" ]; then
@@ -32,7 +32,7 @@ if [ "${VERBOSE}" == "true" ]; then
 fi
 
 command="python3 sitechecker.py \
---data ${DATA_PARAM}\
+${DATA_PARAM} \
 ${VERBOSE_PARAM}"
 
 echo "Executing '${command}'..."
