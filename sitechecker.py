@@ -129,12 +129,12 @@ class SiteChecker(object):
             raise Exception(f"Task '{task}' is not defined. Exiting.")
         t = self.data.get("tasks").get(task)
         for action in t:
-            if hasattr(self, action) and callable(func := getattr(self, action)):
+            if hasattr(self, action) and callable(getattr(self, action)):
                 logging.info(f"[{task}] Executing '{action}'...")
                 if os.path.exists(f"{task}-{action}-before.png"): os.remove(f"{task}-{action}-before.png")
                 if os.path.exists(f"{task}-{action}-after.png"): os.remove(f"{task}-{action}-after.png")
                 self.driver.save_screenshot(f"{task}-{action}-before.png")
-                func(**t.get(action))
+                getattr(self, action)(**t.get(action))
                 self.driver.save_screenshot(f"{task}-{action}-after.png")
                 logging.info(f"[{task}] Executing '{action}'...DONE!")
             else:
