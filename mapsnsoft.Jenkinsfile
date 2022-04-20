@@ -8,10 +8,6 @@ pipeline {
     triggers {
         cron('* H/4 * * *')
     }
-    parameters {
-        string(name: 'DATA', defaultValue: 'mapsnsoft.json', description: 'Task data file (JSON)')
-        booleanParam(name: 'VERBOSE', defaultValue: false, description: 'Enable verbose logger output.')
-    }
     stages {
         stage ('Site Checker - Checkout') {
             steps {
@@ -38,9 +34,7 @@ if [ "${VERBOSE}" == "true" ]; then
     VERBOSE_PARAM="--verbose"
 fi
 
-command="python3 sitechecker.py \
-${DATA_PARAM} \
-${VERBOSE_PARAM}"
+command="python3 sitechecker.py --data mapsnsoft.json"
 
 echo "Executing '${command}'..."
 eval $command
