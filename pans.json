@@ -13,7 +13,7 @@
             },
             {
                 "action": "click",
-                "selector": "//span[@class='variant-swatch' and contains(text(),'Cream')]/..",
+                "selector": "//span[@class='variant-swatch' and contains(text(),'Cream')]/../..",
                 "by": "xpath",
                 "timeout": 10
             },
