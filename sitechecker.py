@@ -111,11 +111,18 @@ class SiteChecker(object):
         logging.info(f"Clicking element '{selector}'...DONE!")
 
     def send(self, element, value):
-        logging.info(f"Clicking element '{element.get('selector')}'...")
+        logging.info(f"Sending value to element '{element.get('selector')}'...")
         e = self.is_clickable(**element)
         e.clear()
         e.send_keys(value)
-        logging.info(f"Clicking element '{element.get('selector')}'...DONE!")
+        logging.info(f"Sending value to element '{element.get('selector')}'...DONE!")
+
+    def send_var(self, element, var_name):
+        logging.info(f"Sending '{var_name}' to '{element.get('selector')}'...")
+        e = self.is_clickable(**element)
+        e.clear()
+        e.send_keys(os.environ.get(f"{var_name}", ""))
+        logging.info(f"Sending '{var_name}' to '{element.get('selector')}'...DONE!")
 
     def sleep(self, seconds):
         logging.info(f"Sleeping for {seconds} seconds...")
@@ -128,13 +135,16 @@ class SiteChecker(object):
         if not task in list(self.data.get("tasks")):
             raise Exception(f"Task '{task}' is not defined. Exiting.")
         t = self.data.get("tasks").get(task)
-        for action in t:
+        for action_obj in t:
+            action = action_obj.get("action")
+            params = dict(action_obj)
+            del params['action']
             if hasattr(self, action) and callable(getattr(self, action)):
                 logging.info(f"[{task}] Executing '{action}'...")
                 if os.path.exists(f"{task}-{action}-before.png"): os.remove(f"{task}-{action}-before.png")
                 if os.path.exists(f"{task}-{action}-after.png"): os.remove(f"{task}-{action}-after.png")
                 self.driver.save_screenshot(f"{task}-{action}-before.png")
-                getattr(self, action)(**t.get(action))
+                getattr(self, action)(**params)
                 self.driver.save_screenshot(f"{task}-{action}-after.png")
                 logging.info(f"[{task}] Executing '{action}'...DONE!")
             else:

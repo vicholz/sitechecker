@@ -1,0 +1,59 @@
+{
+    "tasks": {
+        "Check Maps n Soft": [
+            { 
+                "action": "get",
+                "url": "https://www.mapnsoft.com/kia/"
+            },
+            {
+                "action": "send_var",
+                "element": {
+                    "selector": "[name='login[username]']",
+                    "by": "css selector",
+                    "timeout": 10
+                },
+                "var_name": "MAPSNSOFT_USER"
+            },
+            {
+                "action": "send_var",
+                "element": {
+                    "selector": "[name='login[password]']",
+                    "by": "css selector",
+                    "timeout": 10
+                },
+                "var_name": "MAPSNSOFT_PASS"
+            },
+            {
+                "action": "click",
+                "selector": "#send2",
+                "by": "css selector",
+                "timeout": 10
+            },
+            {
+                "action": "is_visible",
+                "selector": "div.btn-search",
+                "by": "css selector",
+                "timeout": 10
+            },
+            {
+                "action": "get",
+                "url": "https://www.mapnsoft.com/kia/mapnsoft/product/search/c/USA/y/206/m/182"
+            },
+            {
+                "action": "has_inner_text",
+                "element":{
+                    "selector": "//td[contains(text(),'SW Version After Update')]/following-sibling::td",
+                    "by": "xpath",
+                    "timeout": 10
+                },
+                "value": "ON22.USA.S5W_M.V007.001.211127"
+            }
+        ]
+    },
+    "execution": [
+        "Check Maps n Soft"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}

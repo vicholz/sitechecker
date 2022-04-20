@@ -1,15 +1,18 @@
 {
     "tasks": {
-        "Check Milk": {
-            "get": {
+        "Check Milk": [
+            {
+                "action": "get",
                 "url": "https://www.samsclub.com/p/horizon-organic-whole-mlk/prod20632216"
             },
-            "is_visible": {
+            {
+                "action": "is_visible",
                 "selector": "button.sc-pc-out-of-stock-button > span",
                 "by": "css selector",
                 "timeout": 10
             },
-            "has_inner_text": {
+            {
+                "action": "has_inner_text",
                 "element":{
                     "selector": "button.sc-pc-out-of-stock-button > span",
                     "by": "css selector",
@@ -17,7 +20,7 @@
                 },
                 "value": "Out of stock"
             }
-        }
+        ]
     },
     "execution": [
         "Check Milk"

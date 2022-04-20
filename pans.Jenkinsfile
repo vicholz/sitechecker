@@ -9,7 +9,7 @@ pipeline {
         cron('* H/4 * * *')
     }
     parameters {
-        string(name: 'DATA', defaultValue: '', description: 'Task data file (JSON)')
+        string(name: 'DATA', defaultValue: 'pans.json', description: 'Task data file (JSON)')
         booleanParam(name: 'VERBOSE', defaultValue: false, description: 'Enable verbose logger output.')
     }
     stages {
