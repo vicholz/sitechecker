@@ -20,7 +20,14 @@ pipeline {
         }
         stage ('Site Checker - Run') {
             steps {
-                sh '''
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'MAPSNSOFT',
+                        usernameVariable: 'MAPSNSOFT_USER',
+                        passwordVariable: 'MAPSNSOFT_PASS'
+                    )])
+                {
+                    sh '''
 set +x
 
 if [ -n "${DATA}" ]; then
@@ -37,7 +44,8 @@ ${VERBOSE_PARAM}"
 
 echo "Executing '${command}'..."
 eval $command
-                '''
+                    '''
+                }
             }
         }
     }
