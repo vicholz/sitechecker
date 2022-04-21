@@ -16,14 +16,7 @@ pipeline {
         }
         stage ('Site Checker - Run') {
             steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'MAPSNSOFT',
-                        usernameVariable: 'MAPSNSOFT_USER',
-                        passwordVariable: 'MAPSNSOFT_PASS'
-                    )])
-                {
-                    sh '''
+                sh '''
 set +x
 
 if [ -n "${DATA}" ]; then
@@ -34,12 +27,11 @@ if [ "${VERBOSE}" == "true" ]; then
     VERBOSE_PARAM="--verbose"
 fi
 
-command="python3 sitechecker.py --data mapsnsoft.json"
+command="python3 sitechecker.py --data gpu.json"
 
 echo "Executing '${command}'..."
 eval $command
-                    '''
-                }
+                '''
             }
         }
         stage ("Email") {
@@ -55,7 +47,7 @@ def details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
 emailext (
     subject: subject,
     body: details,
-    recipientProviders: [developers(), requestor(), recipients("vicholz@gmail.com")]
+    recipientProviders: [developers(), requestor(), recipients("${env.EMAIL_GPU}")]
 )
                 }
             }

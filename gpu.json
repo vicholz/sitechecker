@@ -1,0 +1,22 @@
+{
+    "tasks": {
+        "3080TI": [
+            { 
+                "action": "get",
+                "url": "https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-ti-12gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6462956.p?skuId=6462956"
+            },
+            {
+                "action": "is_visible",
+                "selector": "//div/strong[contains(text(),'Sold Out')]",
+                "by": "xpath",
+                "timeout": 10
+            }
+        ]
+    },
+    "execution": [
+        "3080TI"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}
