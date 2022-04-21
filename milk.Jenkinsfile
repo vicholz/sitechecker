@@ -6,7 +6,7 @@ pipeline {
         timestamps()
     }
     triggers {
-        cron('* H/4 * * *')
+        cron('* * 7 * *')
     }
     stages {
         stage ('Site Checker - Checkout') {
