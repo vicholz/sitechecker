@@ -41,5 +41,25 @@ eval $command
             }
         }
     }
+    post {
+        always {
+            archiveArtifacts artifacts: '*.png', fingerprint: true
+            script {
+def subject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
+def details = """
+<a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
+<a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
+"""
+
+if ("${currentBuild.currentResult}" != "SUCCESS"){
+    emailext (
+        subject: subject,
+        body: details,
+        to: "${env.EMAIL_DEFAULT}"
+    )
+}
+            }
+        }
+    }
 }
 

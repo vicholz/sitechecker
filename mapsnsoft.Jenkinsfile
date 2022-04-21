@@ -42,24 +42,25 @@ eval $command
                 }
             }
         }
-        stage ("Email") {
-            steps {
-                script {
-def colorName = 'RED'
-def colorCode = '#FF0000'
-def subject = "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-def summary = "${subject} (${env.BUILD_URL})"
-def details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-<p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: '*.png', fingerprint: true
+            script {
+def subject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
+def details = """
+<a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
+<a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
+"""
 
-emailext (
-    subject: subject,
-    body: details,
-    recipientProviders: [developers(), requestor(), recipients("vicholz@gmail.com")]
-)
-                }
+if ("${currentBuild.currentResult}" != "SUCCESS"){
+    emailext (
+        subject: subject,
+        body: details,
+        to: "${env.EMAIL_DEFAULT}"
+    )
+}
             }
         }
     }
 }
-

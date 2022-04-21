@@ -34,24 +34,24 @@ eval $command
                 '''
             }
         }
-        stage ("Email") {
-            steps {
-                script {
-def colorName = 'RED'
-def colorCode = '#FF0000'
-def subject = "${currentBuild.currentResult}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-def summary = "${subject} (${env.BUILD_URL})"
-def details = """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-<p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>"""
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: '*.png', fingerprint: true
+            script {
+def subject = "GPU STOCK CHANGE DETECTED!"
+def details = """
+<a href='https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-ti-12gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6462956.p?skuId=6462956'>3080TI</a>
+"""
 
-emailext (
-    subject: subject,
-    body: details,
-    recipientProviders: [developers(), requestor(), recipients("${env.EMAIL_GPU}")]
-)
-                }
+if ("${currentBuild.currentResult}" != "SUCCESS"){
+    emailext (
+        subject: subject,
+        body: details,
+        to: "${env.EMAIL_GPU}"
+    )
+}
             }
         }
     }
 }
-

@@ -9,14 +9,14 @@
                 "action": "is_visible",
                 "selector": "button.sc-pc-out-of-stock-button > span",
                 "by": "css selector",
-                "timeout": 10
+                "timeout": 5
             },
             {
                 "action": "has_inner_text",
                 "element":{
                     "selector": "button.sc-pc-out-of-stock-button > span",
                     "by": "css selector",
-                    "timeout": 10
+                    "timeout": 5
                 },
                 "value": "Out of stock"
             }
