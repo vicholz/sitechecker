@@ -41,7 +41,8 @@ if ("${currentBuild.currentResult}" != "SUCCESS"){
     emailext (
         subject: subject,
         body: details,
-        to: "${env.EMAIL_DEFAULT}"
+        to: "${env.EMAIL_DEFAULT}",
+        attachmentsPattern: '**/*.png,**/*.log'
     )
 }
             }

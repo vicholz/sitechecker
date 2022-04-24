@@ -48,7 +48,8 @@ if ("${currentBuild.currentResult}" != "SUCCESS"){
     emailext (
         subject: subject,
         body: details,
-        to: "${env.EMAIL_GPU}"
+        to: "${env.EMAIL_GPU}",
+        attachmentsPattern: '**/*.png,**/*.log'
     )
 }
             }
