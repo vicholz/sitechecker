@@ -47,8 +47,9 @@ eval $command
         always {
             archiveArtifacts artifacts: '*.png', fingerprint: true
             script {
-def subject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
+def subject = "Maps have been updated!"
 def details = """
+<a hred='https://www.mapnsoft.com/kia/mapnsoft/product/search/c/USA/y/206/m/182'>LINK</a><br>
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
