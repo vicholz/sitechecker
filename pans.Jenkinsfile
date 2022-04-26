@@ -39,8 +39,9 @@ eval $command
         always {
             archiveArtifacts artifacts: '*.png', fingerprint: true
             script {
-def subject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
+def subject = "Pans are in stock!"
 def details = """
+<a href='https://www.samsclub.com/p/members-mark-11pc-modern-ceramic-cookware-set/prod26140161'>LINK</a><br>
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
