@@ -7,7 +7,7 @@
             },
             {
                 "action": "is_visible",
-                "selector": "span.variant-swatch",
+                "selector": "div.variants-swatches",
                 "by": "css selector",
                 "timeout": 10
             },
