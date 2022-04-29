@@ -109,6 +109,25 @@ class SiteChecker(object):
         e = self.is_clickable(selector, by, timeout)
         e.click()
         logging.info(f"Clicking element '{selector}'...DONE!")
+    
+    def click_and_hold(self, selector, by, timeout, seconds, fail=True):
+        logging.info(f"Clicking and holding element '{selector}'...")
+        try:
+            action = ActionChains(self.driver)
+            e = self.is_clickable(selector, by, timeout)
+            action.click_and_hold(e)
+            action.perform()
+            time.sleep(seconds)
+            action.release(e)
+            action.perform()
+            time.sleep(0.5)
+            action.release(e)
+        except Exception as e:
+            if fail:
+                raise Exception(e)
+            else:
+                logging.warning(f"Clicking and holding element '{selector}'...Failed! Skipping!")
+        logging.info(f"Clicking and holding element '{selector}'...DONE!")
 
     def send(self, element, value):
         logging.info(f"Sending value to element '{element.get('selector')}'...")
