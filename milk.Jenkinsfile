@@ -14,6 +14,8 @@ pipeline {
                 sh '''
 set +x
 
+rm -rf *.log *.png
+
 command="python3 sitechecker.py --data milk.json"
 
 echo "Executing '${command}'..."

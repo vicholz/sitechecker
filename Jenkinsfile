@@ -18,6 +18,8 @@ pipeline {
                 sh '''
 set +x
 
+rm -rf *.log *.png
+
 if [ -n "${DATA}" ]; then
     DATA_PARAM="--data ${DATA}"
 fi
