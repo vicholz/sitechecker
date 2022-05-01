@@ -1,0 +1,22 @@
+{
+    "tasks": {
+        "Check MA1": [
+            {
+                "action": "get",
+                "url": "https://smile.amazon.com/Motorola-MA1-Wireless-Android-Adapter/dp/B09PQ95GY4"
+            },
+            {
+                "action": "is_visible",
+                "selector": "//a[@title='See All Buying Options' and contains(text(),' See All Buying Options ')]",
+                "by": "xpath",
+                "timeout": 5
+            }
+        ]
+    },
+    "execution": [
+        "Check MA1"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}

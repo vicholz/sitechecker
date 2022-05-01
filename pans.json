@@ -10,7 +10,7 @@
                 "selector": "#px-captcha",
                 "by": "css selector",
                 "timeout": 10,
-                "seconds": 10,
+                "seconds": 12,
                 "fail": false
             },
             {
