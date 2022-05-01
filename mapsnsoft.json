@@ -3,7 +3,7 @@
         "Check Maps n Soft": [
             { 
                 "action": "get",
-                "url": "https://www.mapnsoft.com/kia/"
+                "url": "https://www.mapnsoft.com/kia/customer/account/login/#dashboard"
             },
             {
                 "action": "send_var",
