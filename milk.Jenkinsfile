@@ -9,11 +9,6 @@ pipeline {
         cron('H */4 * * *')
     }
     stages {
-        stage ('Site Checker - Checkout') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/vicholz/sitechecker']]])
-            }
-        }
         stage ('Site Checker - Run') {
             steps {
                 sh '''
@@ -29,7 +24,7 @@ eval $command
     }
     post {
         always {
-            archiveArtifacts artifacts: '*.png', fingerprint: true
+            archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
             script {
 def subject = "Milk is in stock!"
 def details = """

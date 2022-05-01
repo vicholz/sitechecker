@@ -13,11 +13,6 @@ pipeline {
         booleanParam(name: 'VERBOSE', defaultValue: false, description: 'Enable verbose logger output.')
     }
     stages {
-        stage ('Site Checker - Checkout') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/vicholz/sitechecker']]])
-            }
-        }
         stage ('Site Checker - Run') {
             steps {
                 sh '''
@@ -43,7 +38,7 @@ eval $command
     }
     post {
         always {
-            archiveArtifacts artifacts: '*.png', fingerprint: true
+            archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
             script {
 def subject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
 def details = """
