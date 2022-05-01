@@ -42,11 +42,11 @@
             {
                 "action": "has_inner_text",
                 "element":{
-                    "selector": "//div[contains(text(),'November 8th, 2021')]",
+                    "selector": "//td[contains(text(),'SW Version After Update')]/following-sibling::td",
                     "by": "xpath",
                     "timeout": 10
                 },
-                "value": "November 8th, 2021"
+                "value": "ON22.USA.S5W_M.V008.001.220419"
             }
         ]
     },
