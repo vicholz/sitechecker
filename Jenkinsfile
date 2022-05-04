@@ -48,7 +48,7 @@ def details = """
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
-if ("${currentBuild.currentResult}" != "SUCCESS"){
+if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
     emailext (
         subject: subject,
         body: details,

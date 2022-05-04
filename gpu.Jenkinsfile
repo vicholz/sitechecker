@@ -41,7 +41,7 @@ def details = """
 <a href='https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-ti-12gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6462956.p?skuId=6462956'>3080TI</a>
 """
 
-if ("${currentBuild.currentResult}" != "SUCCESS"){
+if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
     emailext (
         subject: subject,
         body: details,
