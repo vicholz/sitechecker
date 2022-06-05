@@ -28,7 +28,7 @@ eval $command
         always {
             archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
             script {
-def subject = "Milk is in stock!"
+def subject = "MA1 is in stock!"
 def details = """
 <a href='https://smile.amazon.com/Motorola-MA1-Wireless-Android-Adapter/dp/B09PQ95GY4'>LINK</a><br>
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
