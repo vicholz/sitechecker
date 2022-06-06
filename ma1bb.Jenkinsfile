@@ -16,7 +16,7 @@ set +x
 
 rm -rf *.log *.png
 
-command="python3 sitechecker.py --data ma1.json"
+command="python3 sitechecker.py --data ma1bb.json"
 
 echo "Executing '${command}'..."
 eval $command
