@@ -10,7 +10,7 @@
                 "selector": "#px-captcha",
                 "by": "css selector",
                 "timeout": 10,
-                "seconds": 12,
+                "seconds": ["math.floor(random.random() * 5) + 1","math.floor(random.random() * 5) + 1","math.floor(random.random() * 5) + 1"],
                 "fail": false
             },
             {

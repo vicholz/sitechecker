@@ -4,7 +4,9 @@ import argparse
 import json
 import logging
 import logging.config
+import math
 import os
+import random
 import time
 import warnings
 warnings.filterwarnings('ignore')
@@ -110,18 +112,18 @@ class SiteChecker(object):
         e.click()
         logging.info(f"Clicking element '{selector}'...DONE!")
     
-    def click_and_hold(self, selector, by, timeout, seconds, fail=True):
+    def click_and_hold(self, selector, by, timeout, seconds=[1], fail=True):
         logging.info(f"Clicking and holding element '{selector}'...")
         try:
             action = ActionChains(self.driver)
             e = self.is_clickable(selector, by, timeout)
-            action.click_and_hold(e)
-            action.perform()
-            time.sleep(seconds)
-            action.release(e)
-            action.perform()
-            time.sleep(0.5)
-            action.release(e)
+            for s in seconds:
+                if type(s) != int:
+                    s = eval(s)
+                action.click_and_hold(e)
+                action.perform()
+                time.sleep(s)
+                action.release(e)
         except Exception as e:
             if fail:
                 raise Exception(e)

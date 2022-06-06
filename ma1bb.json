@@ -1,0 +1,22 @@
+{
+    "tasks": {
+        "Check MA1": [
+            {
+                "action": "get",
+                "url": "https://www.bestbuy.com/site/motorola-wireless-car-adapter-for-android-auto-black/6505050.p?skuId=6505050"
+            },
+            {
+                "action": "is_visible",
+                "selector": "button.add-to-cart-button",
+                "by": "css selector",
+                "timeout": 5
+            }
+        ]
+    },
+    "execution": [
+        "Check MA1"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}
