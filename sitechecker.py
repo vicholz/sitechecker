@@ -23,7 +23,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from fake_useragent import UserAgent
 
 class SiteChecker(object):
-    def __init__(self, data):
+    def __init__(self, data, verbose=False):
         if os.path.isfile(data):
             with open(data, 'r') as f:
                 self.data = json.load(f)
@@ -39,15 +39,18 @@ class SiteChecker(object):
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument('--disable-gpu')
         options.add_argument('--no-sandbox')
-        options.add_argument('--headless')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
 
         service_args = [
             '--ssl-protocol=any',
-            '--ignore-ssl-errors=true',
-            '--headless'
+            '--ignore-ssl-errors=true'
         ]
+
+        if not verbose:
+            options.add_argument('--headless')
+            service_args.append("--headless")
+
         # dcap = dict(DesiredCapabilities.PHANTOMJS)
         # dcap["phantomjs.page.settings.userAgent"] = (self.data.get("properties").get("useragent"))
         # self.driver = webdriver.PhantomJS(service_args=service_args, desired_capabilities=dcap)
@@ -103,7 +106,7 @@ class SiteChecker(object):
     def has_inner_text(self, element, value):
         logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...")
         e = self.is_visible(**element)
-        assert(e.get_attribute('innerText').includes(value))
+        assert(value in e.get_attribute('innerText'))
         logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...DONE!")
 
     def click(self, selector, by, timeout):
@@ -122,7 +125,9 @@ class SiteChecker(object):
                     s = eval(s)
                 action.click_and_hold(e)
                 action.perform()
+                self.random_mouse_moves()
                 time.sleep(s)
+                self.random_mouse_moves()
                 action.release(e)
         except Exception as e:
             if fail:
@@ -149,6 +154,18 @@ class SiteChecker(object):
         logging.info(f"Sleeping for {seconds} seconds...")
         time.sleep(seconds)
         logging.info(f"Sleeping for {seconds} seconds...DONE!")
+
+    def move_mouse(self, x_offset, y_offset):
+        action = webdriver.ActionChains(self.driver)
+        action.move_by_offset(x_offset, y_offset)
+        action.perform()
+    
+    def random_mouse_moves(self, x_max=10, y_max=10):
+        x = math.floor(random.random() * x_max) + 1
+        y = math.floor(random.random() * y_max) + 1
+        action = webdriver.ActionChains(self.driver)
+        action.move_by_offset(x, y)
+        action.perform()
 
     def execute_task(self, task):
         if not task in list(self.data.get("execution")):
@@ -189,6 +206,6 @@ if __name__ == "__main__":
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    sc = SiteChecker(args.data)
+    sc = SiteChecker(args.data, verbose=args.verbose)
     for task in sc.data.get("execution"):
         sc.execute_task(task)

@@ -9,9 +9,14 @@
                 "action": "click_and_hold",
                 "selector": "#px-captcha",
                 "by": "css selector",
-                "timeout": 10,
-                "seconds": ["math.floor(random.random() * 5) + 1","math.floor(random.random() * 5) + 1","math.floor(random.random() * 5) + 1"],
+                "timeout": 30,
+                "seconds": ["math.floor(random.random() * 7) + 1","math.floor(random.random() * 7) + 1","math.floor(random.random() * 7) + 1"],
                 "fail": false
+            },
+            {
+                "action": "move_mouse",
+                "x_offset": -20,
+                "y_offset": -25
             },
             {
                 "action": "is_visible",
@@ -21,7 +26,7 @@
             },
             {
                 "action": "click",
-                "selector": "//span[@class='variant-swatch' and contains(text(),'Cream')]/../..",
+                "selector": "//span[@class='variant-swatch' and contains(text(),'Cream')]/..",
                 "by": "xpath",
                 "timeout": 10
             },
