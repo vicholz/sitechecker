@@ -103,7 +103,7 @@ class SiteChecker(object):
     def has_inner_text(self, element, value):
         logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...")
         e = self.is_visible(**element)
-        assert(e.get_attribute('innerText') == value)
+        assert(e.get_attribute('innerText').includes(value))
         logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...DONE!")
 
     def click(self, selector, by, timeout):

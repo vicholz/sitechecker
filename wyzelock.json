@@ -1,0 +1,22 @@
+{
+    "tasks": {
+        "CheckStock": [
+            {
+                "action": "get",
+                "url": "https://www.wyze.com/products/wyze-lock-bolt"
+            },
+            {
+                "action": "is_visible",
+                "selector": "//button[@name='add']/span[contains(text(),'Sold Out')]",
+                "by": "xpath",
+                "timeout": 5
+            }
+        ]
+    },
+    "execution": [
+        "CheckStock"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}
