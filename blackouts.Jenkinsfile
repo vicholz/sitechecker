@@ -17,24 +17,25 @@ set +x
 rm -rf *.log *.png
 
 command="python3 sitechecker.py --data blackouts.json"
-
 echo "Executing '${command}'..."
 eval $command
+
 echo "Checking for block '${PGE_BLOCK}'..."
 cat BLACKOUTS.txt
-if grep ${PGE_BLOCK} BLACKOUTS.txt; then
-    echo "Found block 'PGE_BLOCK'"
+if (grep ${PGE_BLOCK} BLACKOUTS.txt); then
+    echo "Found block '${PGE_BLOCK}'"
     exit 1
 else
-    echo "Did not find block 'PGE_BLOCK'"
+    echo "Did not find block '${PGE_BLOCK}'"
     exit 0
+fi
                 '''
             }
         }
     }
     post {
         always {
-            archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
+            archiveArtifacts artifacts: '*.png,**/*.log,**/*.txt', fingerprint: true
             script {
 def subject = "BLACKOUTS ARE COMING!"
 def details = """
