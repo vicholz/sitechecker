@@ -62,7 +62,7 @@ class SiteChecker(object):
         self.accept_next_alert = True
         self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         self.driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{self.data.get("properties").get("useragent")}'})
-        
+    
     def get(self, url):
         logging.info(f"Getting '{url}'...")
         self.driver.get(url)
@@ -73,19 +73,34 @@ class SiteChecker(object):
         self.driver.request('POST', url, data)
         logging.info(f"Posting to '{url}'...DONE!")
     
-    def is_visible(self, selector:str, by=By.ID, timeout:int=1, tries:int=3):
+    def find_element(self, selector:str, by=By.ID, timeout:int=10, tries:int=3):
+        logging.info(f"Looking for element '{selector}'...")
+        tries_left = tries
+        while tries_left > 0:
+            tries_left -= 1
+            try:
+                e = self.driver.find_element(by, selector)
+                logging.info(f"Looking for visible element '{selector}'...DONE!")
+                return e
+            except:
+                logging.error(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
+                time.sleep(timeout)
+        raise TimeoutException(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
+    
+    def is_visible(self, selector:str, by=By.ID, timeout:int=10, tries:int=3):
         logging.info(f"Looking for visible element '{selector}'...")
         tries_left = tries
         while tries_left > 0:
             tries_left -= 1
             try:
-                e = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((by, selector)))
-                waiter = WebDriverWait(self.driver, timeout)
-                waiter.until(EC.visibility_of_element_located((by, selector)))
+                e = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located((by, selector)))
+                # waiter = WebDriverWait(self.driver, timeout)
+                # e = waiter.until(EC.visibility_of_element_located(e))
                 logging.info(f"Looking for visible element '{selector}'...DONE!")
                 return e
             except:
                 logging.error(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
+                time.sleep(timeout)
         raise TimeoutException(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
     
     def is_clickable(self, selector:str, by=By.ID, timeout:int=1, tries:int=3):
@@ -94,13 +109,14 @@ class SiteChecker(object):
         while tries_left > 0:
             tries_left -= 1
             try:
-                e = WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((by, selector)))
-                waiter = WebDriverWait(self.driver, timeout)
-                waiter.until(EC.element_to_be_clickable((by, selector)))
+                e = WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable((by, selector)))
+                # waiter = WebDriverWait(self.driver, timeout)
+                # waiter.until(EC.element_to_be_clickable((by, selector)))
                 logging.info(f"Looking for clickable element '{selector}'...DONE!")
                 return e
             except:
                 logging.error(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
+                time.sleep(timeout)
         raise TimeoutException(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
     
     def has_inner_text(self, element, value):
@@ -150,22 +166,68 @@ class SiteChecker(object):
         e.send_keys(os.environ.get(f"{var_name}", ""))
         logging.info(f"Sending '{var_name}' to '{element.get('selector')}'...DONE!")
 
-    def sleep(self, seconds):
+    def export_attrib_value(self, element, attrib, var_name):
+        logging.info(f"Getting element value from '{element.get('selector')}'...")
+        value = self.find_element(**element).get_attribute(attrib).strip()
+        logging.info(f"Getting element value from '{element.get('selector')}'...DONE!")
+        logging.info(f"Setting ENV var '{var_name}' = '{value}'...")
+        os.environ[var_name] = value
+        logging.info(f"Setting ENV var '{var_name}' = '{value}'...DONE!")
+
+    def export_text(self, element, var_name):
+        logging.info(f"Getting element value from '{element.get('selector')}'...")
+        value = self.find_element(**element).get_attribute("innerText").strip()
+        logging.info(f"Getting element value from '{element.get('selector')}'...DONE!")
+        logging.info(f"Setting ENV var '{var_name}' = '{value}'...")
+        os.environ[var_name] = value
+        logging.info(f"Setting ENV var '{var_name}' = '{value}'...DONE!")
+    
+    def write_attrib_value(self, element, attrib, file):
+        logging.info(f"Getting element value from '{element.get('selector')}'...")
+        value = self.find_element(**element).get_attribute(attrib).strip()
+        logging.info(f"Getting element value from '{element.get('selector')}'...DONE!")
+        logging.info(f"Writting '{value}' to '{file}'...")
+        with open(file, "w") as f:
+            f.write(value)
+            f.close()
+        logging.info(f"Writting '{value}' to '{file}'...DONE!")
+    
+    def read_file_value(self, element, file, var_name):
+        logging.info(f"Getting element value from '{element.get('selector')}'...")
+        value = self.find_element(**element).get_attribute(attrib).strip()
+        logging.info(f"Getting element value from '{element.get('selector')}'...DONE!")
+        logging.info(f"Reading file '{file}' to ENV var '{var_name}'...")
+        with open(file, "r") as f:
+            value = f.read()
+            f.close()
+        os.environ[var_name] = value
+        logging.info(f"Reading file '{file}' to ENV var '{var_name}'...DONE!")
+
+    def scroll(self, x=0, y=0):
+        logging.info(f"Scrolling x = {x}, y = {y}...")
+        self.driver.execute_script(f"window.scrollBy({x},{y})", "")
+        logging.info(f"Scrolling x = {x}, y = {y}...DONE!")
+
+    def sleep(self, seconds=1):
         logging.info(f"Sleeping for {seconds} seconds...")
         time.sleep(seconds)
         logging.info(f"Sleeping for {seconds} seconds...DONE!")
 
     def move_mouse(self, x_offset, y_offset):
+        logging.info(f"Moving mouse x = {x_offset}, y = {y_offset}...")
         action = webdriver.ActionChains(self.driver)
         action.move_by_offset(x_offset, y_offset)
         action.perform()
+        logging.info(f"Moving mouse x = {x_offset}, y = {y_offset}...DONE!")
     
     def random_mouse_moves(self, x_max=10, y_max=10):
         x = math.floor(random.random() * x_max) + 1
         y = math.floor(random.random() * y_max) + 1
+        logging.info(f"Moving mouse x = {x}, y = {y}...")
         action = webdriver.ActionChains(self.driver)
         action.move_by_offset(x, y)
         action.perform()
+        logging.info(f"Moving mouse x = {x}, y = {y}...DONE!")
 
     def execute_task(self, task):
         if not task in list(self.data.get("execution")):

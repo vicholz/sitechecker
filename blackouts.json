@@ -1,0 +1,26 @@
+{
+    "tasks": {
+        "Get Blackout Blocks": [
+            {
+                "action": "get",
+                "url": "https://www.pge.com/en_US/residential/outages/planning-and-preparedness/safety-and-preparedness/find-your-rotating-outage-block/find-your-rotating-outage-block.page?WT.mc_id=Vanity_rotatingoutages"
+            },
+            {
+                "action": "write_attrib_value",
+                "element":{
+                    "selector": "//th[contains(text(), 'rotating outages listed by block')]/../following-sibling::tr/td/div",
+                    "by": "xpath",
+                    "timeout": 5
+                },
+                "attrib": "innerText",
+                "file": "BLACKOUTS.txt"
+            }
+        ]
+    },
+    "execution": [
+        "Get Blackout Blocks"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}
