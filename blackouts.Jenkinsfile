@@ -22,6 +22,7 @@ eval $command
 
 echo "Checking for block '${PGE_BLOCK}'..."
 cat BLACKOUTS.txt
+echo
 if (grep ${PGE_BLOCK} BLACKOUTS.txt); then
     echo "Found block '${PGE_BLOCK}'"
     exit 1
