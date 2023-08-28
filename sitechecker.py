@@ -122,8 +122,13 @@ class SiteChecker(object):
     def has_inner_text(self, element, value):
         logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...")
         e = self.is_visible(**element)
-        assert(value in e.get_attribute('innerText'))
-        logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...DONE!")
+        
+        if value in e.get_attribute('innerText'):
+            logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...DONE!")
+        else:
+            error = f"Checking element '{element.get('selector')}' has text '{value}'...NOT FOUND!"
+            logging.error(error)
+            raise Exception(error)
 
     def click(self, selector, by, timeout):
         logging.info(f"Clicking element '{selector}'...")
@@ -243,9 +248,12 @@ class SiteChecker(object):
                 logging.info(f"[{task}] Executing '{action}'...")
                 if os.path.exists(f"{task}-{action}-before.png"): os.remove(f"{task}-{action}-before.png")
                 if os.path.exists(f"{task}-{action}-after.png"): os.remove(f"{task}-{action}-after.png")
-                self.driver.save_screenshot(f"{task}-{action}-before.png")
+                task_index = list(self.data.get("execution")).index(task)
+                task_name = task.replace(" ", "_")
+                task_action = action.replace(" ", "_")
+                self.driver.save_screenshot(f"{task_index}-{task_name}-{task_action}-before.png")
                 getattr(self, action)(**params)
-                self.driver.save_screenshot(f"{task}-{action}-after.png")
+                self.driver.save_screenshot(f"{task_index}-{task_name}-{task_action}-after.png")
                 logging.info(f"[{task}] Executing '{action}'...DONE!")
             else:
                 raise Exception(f"Action method for '{action}' is not defined. Exiting.")
