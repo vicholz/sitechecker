@@ -250,7 +250,7 @@ class SiteChecker(object):
                 if os.path.exists(f"{task}-{action}-after.png"): os.remove(f"{task}-{action}-after.png")
                 print(self.data.get("tasks"))
                 print(self.data.get("tasks").get(task))
-                task_index = self.data.get("tasks").get(task).index(action)
+                task_index = self.data.get("tasks").get(task).index(action_obj)
                 task_name = task.replace(" ", "_")
                 task_action = action.replace(" ", "_")
                 self.driver.save_screenshot(f"{task_index:03}-{task_name}-{task_action}-before.png")
