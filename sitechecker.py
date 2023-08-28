@@ -248,6 +248,8 @@ class SiteChecker(object):
                 logging.info(f"[{task}] Executing '{action}'...")
                 if os.path.exists(f"{task}-{action}-before.png"): os.remove(f"{task}-{action}-before.png")
                 if os.path.exists(f"{task}-{action}-after.png"): os.remove(f"{task}-{action}-after.png")
+                print(self.data.get("tasks"))
+                print(self.data.get("tasks").get(task))
                 task_index = self.data.get("tasks").get(task).index(action)
                 task_name = task.replace(" ", "_")
                 task_action = action.replace(" ", "_")
