@@ -251,9 +251,9 @@ class SiteChecker(object):
                 task_index = list(self.data.get("execution")).index(task)
                 task_name = task.replace(" ", "_")
                 task_action = action.replace(" ", "_")
-                self.driver.save_screenshot(f"{task_index}-{task_name}-{task_action}-before.png")
+                self.driver.save_screenshot(f"{task_index:03}-{task_name}-{task_action}-before.png")
                 getattr(self, action)(**params)
-                self.driver.save_screenshot(f"{task_index}-{task_name}-{task_action}-after.png")
+                self.driver.save_screenshot(f"{task_index:03}-{task_name}-{task_action}-after.png")
                 logging.info(f"[{task}] Executing '{action}'...DONE!")
             else:
                 raise Exception(f"Action method for '{action}' is not defined. Exiting.")
