@@ -14,6 +14,7 @@ warnings.filterwarnings('ignore')
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.proxy import *
 from selenium.webdriver.support import expected_conditions as EC
@@ -40,22 +41,12 @@ class SiteChecker(object):
         options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument('--disable-gpu')
         options.add_argument('--no-sandbox')
+        options.add_argument('--headless')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
-
-        service_args = [
-            '--ssl-protocol=any',
-            '--ignore-ssl-errors=true'
-        ]
-
-        if not verbose:
-            options.add_argument('--headless')
-            service_args.append("--headless")
-
-        # dcap = dict(DesiredCapabilities.PHANTOMJS)
-        # dcap["phantomjs.page.settings.userAgent"] = (self.data.get("properties").get("useragent"))
-        # self.driver = webdriver.PhantomJS(service_args=service_args, desired_capabilities=dcap)
-        self.driver = webdriver.Chrome(executable_path = shutil.which("chromedriver"), options = options)
+        
+        self.service = Service(executable_path = shutil.which("chromedriver"))
+        self.driver = webdriver.Chrome(self.service, options = options)
         self.driver.implicitly_wait(1)
         self.driver.set_window_position(0, 0)
         self.driver.set_window_size(1920, 1080)
