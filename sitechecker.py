@@ -55,7 +55,7 @@ class SiteChecker(object):
         # dcap = dict(DesiredCapabilities.PHANTOMJS)
         # dcap["phantomjs.page.settings.userAgent"] = (self.data.get("properties").get("useragent"))
         # self.driver = webdriver.PhantomJS(service_args=service_args, desired_capabilities=dcap)
-        self.driver = webdriver.Chrome(shutil.which("chromedriver"), options=options)
+        self.driver = webdriver.Chrome(executable_path = shutil.which("chromedriver"), options = options)
         self.driver.implicitly_wait(1)
         self.driver.set_window_position(0, 0)
         self.driver.set_window_size(1920, 1080)
