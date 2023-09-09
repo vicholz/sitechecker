@@ -46,7 +46,7 @@ class SiteChecker(object):
         options.add_experimental_option('useAutomationExtension', False)
         
         service = Service(executable_path = shutil.which("chromedriver"))
-        self.driver = webdriver.Chrome(service, options)
+        self.driver = webdriver.Chrome(service = service, options = options)
         self.driver.implicitly_wait(1)
         self.driver.set_window_position(0, 0)
         self.driver.set_window_size(1920, 1080)
