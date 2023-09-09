@@ -34,7 +34,7 @@ fi
 python3 -m venv .venv
 . .venv/bin/activate
 
-pip3 install -r -U requirements.txt
+pip3 install -U -r requirements.txt
 
 command="python3 sitechecker.py --data mapsnsoft.json"
 
