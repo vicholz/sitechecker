@@ -31,6 +31,11 @@ if [ "${VERBOSE}" == "true" ]; then
     VERBOSE_PARAM="--verbose"
 fi
 
+python3 -m venv .venv
+. .venv/bin/activate
+
+pip3 install -r -U requirements.txt
+
 command="python3 sitechecker.py --data mapsnsoft.json"
 
 echo "Executing '${command}'..."
