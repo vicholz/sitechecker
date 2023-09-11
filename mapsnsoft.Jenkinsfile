@@ -38,7 +38,7 @@ python3 -m venv .venv
 
 pip3 install -U -r requirements.txt
 
-command="python3 sitechecker.py --data mapsnsoft.json --verbose"
+command="python3 sitechecker.py --data mapsnsoft.json"
 
 echo "Executing '${command}'..."
 eval $command
