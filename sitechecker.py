@@ -49,13 +49,15 @@ class SiteChecker(object):
         dc = DesiredCapabilities.CHROME
         dc["google:loggingPrefs"] = {"browser":"INFO"}
         
-        
         service = Service(
             executable_path = shutil.which("chromedriver"),
             desired_capabilities=dc,
-            service_args=["--verbose", "--log-path=driver.log"]
+            service_args=["--verbose", "--log-path=driver.log"],
         )
-        self.driver = webdriver.Chrome(service = service, options = options)
+        self.driver = webdriver.Chrome(
+            service = service,
+            options = options
+        )
         self.driver.implicitly_wait(1)
         self.driver.set_window_position(0, 0)
         self.driver.set_window_size(1920, 1080)
