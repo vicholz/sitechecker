@@ -21,6 +21,8 @@ pipeline {
                     sh '''
 set +x
 
+export DISPLAY=:0
+
 rm -rf *.log *.png
 
 if [ -n "${DATA}" ]; then
