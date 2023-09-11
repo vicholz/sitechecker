@@ -37,11 +37,20 @@ class SiteChecker(object):
         user_agent = ua.random
         options = webdriver.ChromeOptions()
         options.add_argument(f'--user-agent="{self.data.get("properties").get("useragent")}"')
+        options.add_argument("--disable-blink-features")
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument('--disable-gpu')
+        options.add_argument('--no-sandbox')
         options.add_argument('--headless')
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         
-        service = Service(executable_path = shutil.which("chromedriver"))
+        dc = DesiredCapabilities.CHROME
+        dc["google:loggingPrefs"] = {"browser":"INFO"}
+        
+        
+        service = Service(executable_path = shutil.which("chromedriver"), desired_capabilities=dc)
         self.driver = webdriver.Chrome(service = service, options = options)
         self.driver.implicitly_wait(1)
         self.driver.set_window_position(0, 0)
