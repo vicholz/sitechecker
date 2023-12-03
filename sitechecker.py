@@ -36,10 +36,10 @@ class SiteChecker(object):
         ua = UserAgent()
         user_agent = ua.random
         options = webdriver.ChromeOptions()
-        if verbose:
-            options.add_argument('--verbose')
-        options.add_argument('--headless')
+        #if verbose:
+        options.add_argument('--verbose')
         options.add_argument('--no-sandbox')
+        options.add_argument('--headless')
         options.add_argument(f'--user-agent="{self.data.get("properties").get("useragent")}"')
         # options.add_argument("--disable-blink-features")
         # options.add_argument("--disable-blink-features=AutomationControlled")
