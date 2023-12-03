@@ -46,7 +46,7 @@ class SiteChecker(object):
         options.add_argument('--disable-dev-shm-usage')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
-        #options.binary_location = '/usr/bin/chromium-browser'
+        options.binary_location = shutil.which("google-chrome-stable")
         
         service = Service(
             executable_path = shutil.which("chromedriver")
