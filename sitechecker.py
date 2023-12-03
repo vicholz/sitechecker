@@ -36,12 +36,12 @@ class SiteChecker(object):
         ua = UserAgent()
         user_agent = ua.random
         options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
         options.add_argument(f'--user-agent="{self.data.get("properties").get("useragent")}"')
         # options.add_argument("--disable-blink-features")
         # options.add_argument("--disable-blink-features=AutomationControlled")
-        # options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--headless')
+        options.add_argument('--disable-dev-shm-usage')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         
@@ -250,9 +250,9 @@ class SiteChecker(object):
                 task_index = self.data.get("tasks").get(task).index(action_obj)
                 task_name = task.replace(" ", "_")
                 task_action = action.replace(" ", "_")
-                self.driver.save_screenshot(f"{task_index:03}-{task_name}-{task_action}-before.png")
+                self.driver.save_screenshot(f"screenshots/{task_name}-{task_index:03}-{task_action}-before.png")
                 getattr(self, action)(**params)
-                self.driver.save_screenshot(f"{task_index:03}-{task_name}-{task_action}-after.png")
+                self.driver.save_screenshot(f"screenshots/{task_name}-{task_index:03}-{task_action}-after.png")
                 logging.info(f"[{task}] Executing '{action}'...DONE!")
             else:
                 raise Exception(f"Action method for '{action}' is not defined. Exiting.")
