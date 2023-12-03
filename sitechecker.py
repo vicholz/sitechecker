@@ -36,6 +36,8 @@ class SiteChecker(object):
         ua = UserAgent()
         user_agent = ua.random
         options = webdriver.ChromeOptions()
+        if verbose:
+            options.add_argument('--verbose')
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument(f'--user-agent="{self.data.get("properties").get("useragent")}"')
@@ -44,6 +46,7 @@ class SiteChecker(object):
         options.add_argument('--disable-dev-shm-usage')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
+        options.binary_location = '/usr/bin/chromium-browser'
         
         service = Service(
             executable_path = shutil.which("chromedriver")
