@@ -30,10 +30,8 @@
                 "timeout": 10
             },
             {
-                "action": "is_visible",
-                "selector": "div.btn-search",
-                "by": "css selector",
-                "timeout": 10
+                "action": "sleep",
+                "seconds": 30
             },
             {
                 "action": "get",
