@@ -40,7 +40,7 @@ eval $command
     }
     post {
         always {
-            archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
+            archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
 def subject = "${currentBuild.currentResult}: Job ${env.JOB_NAME} - #${env.BUILD_NUMBER}"
 def details = """

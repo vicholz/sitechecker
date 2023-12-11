@@ -49,7 +49,7 @@ eval $command
     }
     post {
         always {
-            archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
+            archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
 def subject = "Maps have been updated!"
 def details = """

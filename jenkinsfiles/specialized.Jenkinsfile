@@ -41,7 +41,7 @@ eval $command
     }
     post {
         always {
-            archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
+            archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
 def subject = "Stumpjumper EVO Elite Alloy is back in stock!"
 def details = """

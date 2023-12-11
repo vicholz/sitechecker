@@ -1,17 +1,20 @@
 {
     "tasks": {
         "Specialized": [
-            { 
+            {
+                "desc": "Get main url",
                 "action": "get",
                 "url": "https://www.specialized.com/us/en/stumpjumper-evo-elite-alloy/p/199211?color=318420-199211&searchText=96322-4004"
             },
             {
+                "desc": "Click on S4 element",
                 "action": "click",
                 "selector": "//button[contains(text(),'S4')]",
                 "by": "xpath",
                 "timeout": 10
             },
             {
+                "desc": "Check to see if element has expected text",
                 "action": "is_visible",
                 "selector": "//p/span[contains(text(),'Out of Stock Online')]",
                 "by": "xpath",
