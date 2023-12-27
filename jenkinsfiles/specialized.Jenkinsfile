@@ -56,7 +56,7 @@ def details = """
                         to: "${env.EMAIL_DEFAULT}",
                         attachmentsPattern: '**/*.png,**/*.log'
                     )
-                    def response = httpRequest "$SLACK_WEBHOOK_URL?payload={\"text\"\:\"$JOB_NAME status has changed. See $GIT_URL for config details.\"}"
+                    def response = httpRequest "$SLACK_WEBHOOK_URL?payload={\"text\":\"$JOB_NAME status has changed. See $GIT_URL for config details.\"}"
                 }
             }
         }
