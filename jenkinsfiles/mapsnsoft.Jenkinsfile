@@ -70,7 +70,7 @@ eval $command
                     curl \
                         -X POST \
                         --data-urlencode "payload={ \
-                        \"text\": \"$JOB_NAME status has changed. See $GIT_URL for config details.\" \
+                        \"text\": \"$JOB_NAME status has changed. See $GIT_URL for config details.\n$details\" \
                         }" \
                         $SLACK_WEBHOOK_URL
                 '''
