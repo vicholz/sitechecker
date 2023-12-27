@@ -51,21 +51,29 @@ eval $command
         always {
             archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
-def subject = "Maps have been updated!"
-def details = """
-<a hred='https://www.mapnsoft.com/kia/mapnsoft/product/search/c/USA/y/206/m/182'>LINK</a><br>
-<a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
-<a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
-"""
+                def subject = "Maps have been updated!"
+                def details = """
+                <a hred='https://www.mapnsoft.com/kia/mapnsoft/product/search/c/USA/y/206/m/182'>LINK</a><br>
+                <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
+                <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
+                """
 
-if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
-    emailext (
-        subject: subject,
-        body: details,
-        to: "${env.EMAIL_DEFAULT}",
-        attachmentsPattern: '**/*.png,**/*.log'
-    )
-}
+                if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
+                    emailext (
+                        subject: subject,
+                        body: details,
+                        to: "${env.EMAIL_DEFAULT}",
+                        attachmentsPattern: '**/*.png,**/*.log'
+                    )
+                }
+                sh '''
+                    curl \
+                        -X POST \
+                        --data-urlencode "payload={ \
+                        \"text\": \"$JOB_NAME status has changed. See $GIT_URL for config details.\" \
+                        }" \
+                        $SLACK_WEBHOOK_URL
+                '''
             }
         }
     }
