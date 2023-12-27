@@ -56,14 +56,7 @@ def details = """
                         to: "${env.EMAIL_DEFAULT}",
                         attachmentsPattern: '**/*.png,**/*.log'
                     )
-                    sh '''
-                        curl \
-                            -X POST \
-                            --data-urlencode "payload={ \
-                            \"text\": \"$JOB_NAME status has changed. See $GIT_URL for config details.\n$details\" \
-                            }" \
-                            $SLACK_WEBHOOK_URL
-                    '''
+                    def response = httpRequest "$SLACK_WEBHOOK_URL?payload={\"text\"\:\"$JOB_NAME status has changed. See $GIT_URL for config details.\"}"
                 }
             }
         }
