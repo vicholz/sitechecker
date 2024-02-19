@@ -67,11 +67,13 @@ class SiteChecker(object):
         self.driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{self.data.get("properties").get("useragent")}'})
     
     def get(self, url, **kwargs):
+        url = os.path.expandvars(url) 
         logging.debug(f"Getting '{url}'...")
         self.driver.get(url)
         logging.debug(f"Getting '{url}'...DONE!")
 
     def post(self, url, headers, data, **kwargs):
+        url = os.path.expandvars(url) 
         logging.debug(f"Posting to '{url}'...")
         self.driver.request('POST', url, data)
         logging.debug(f"Posting to '{url}'...DONE!")

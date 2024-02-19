@@ -1,0 +1,29 @@
+{
+    "tasks": {
+        "Dell Bios": [
+            {
+                "desc": "Get main url",
+                "action": "get",
+                "url": "https://www.dell.com/support/home/en-us/product-support/servicetag/$DELL_SERVICE_TAG/drivers"
+            },
+            {
+                "desc": "Sleep to wait for page to load",
+                "action": "sleep",
+                "seconds": 45
+            },
+            {
+                "desc": "Check to see if element has expected text",
+                "action": "is_visible",
+                "selector": "//td/div/div[contains(text(),'Dell XPS 15 9530 System BIOS')]/../../following-sibling::td/following-sibling::td/following-sibling::td[contains(text(),'19 Jan 2024')]",
+                "by": "xpath",
+                "timeout": 10
+            }
+        ]
+    },
+    "execution": [
+        "Dell Bios"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}
