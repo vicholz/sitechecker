@@ -41,7 +41,7 @@
             {
                 "desc": "Get next URL",
                 "action": "get",
-                "url": "https://www.mapnsoft.com/kia/mapnsoft/product/search/c/USA/y/206/m/182"
+                "url": "https://www.mapnsoft.com/kia/kia-telluride-2022-us-17-5.html"
             },
             {
                 "desc": "Check SW version",
@@ -51,7 +51,7 @@
                     "by": "xpath",
                     "timeout": 10
                 },
-                "value": "ON22.USA.S5W_M.V011.004.230919"
+                "value": "ON22.USA.S5W_M.V011.004.231215"
             }
         ]
     },
