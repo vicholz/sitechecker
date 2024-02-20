@@ -51,21 +51,19 @@ eval $command
         always {
             archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
-                def subject = "Maps have been updated!"
-                def details = """
-                <a hred='https://www.mapnsoft.com/kia/mapnsoft/product/search/c/USA/y/206/m/182'>LINK</a><br>
-                <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
-                <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
-                """
-
+def EMAIL_SUBJECT = "Kia Mapnsoft Update Available!"
+def EMAIL_CONTENT = """
+<a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
+<a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
+"""
                 if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
-                    emailext (
-                        subject: subject,
-                        body: details,
-                        to: "${env.EMAIL_DEFAULT}",
-                        attachmentsPattern: '**/*.png,**/*.log'
-                    )
-                    def response = httpRequest "$SLACK_WEBHOOK_URL?payload={\"text\":\"$JOB_NAME status has changed. See $GIT_URL for config details.\"}"
+                    sh """
+curl --request POST \
+--url https://api.sendgrid.com/v3/mail/send \
+--header 'Authorization: Bearer ${SENDGRID_API_KEY}' \
+--header 'Content-Type: application/json' \
+--data '{"personalizations":[{"to":[{"email":"${DEFAULT_EMAIL}"}],"subject":"${EMAIL_SUBJECT}"}],"content":[{"type":"text/plain","value":"${EMAIL_CONTENT}"}],"from":{"email":"${DEFAULT_EMAIL}","name":"Jenkins@TinyHoot"},"reply_to":{"email":"${DEFAULT_EMAIL}","name":"Jenkins@TinyHoot"}}'
+                    """
                 }
             }
         }
