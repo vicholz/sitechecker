@@ -1,0 +1,25 @@
+{
+    "tasks": {
+        "Check FZT": [
+            {
+                "action": "get",
+                "url": "https://shop.flipperzero.one/products/flipper-zero-transparent"
+            },
+            {
+                "action": "has_inner_text",
+                "element":{
+                    "selector": "span[data-add-to-cart-text]",
+                    "by": "css selector",
+                    "timeout": 5
+                },
+                "value": "Sold out"
+            }
+        ]
+    },
+    "execution": [
+        "Check FZT"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}
