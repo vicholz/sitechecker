@@ -16,6 +16,10 @@ set +x
 
 rm -rf *.log *.png
 
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+
 command="python3 sitechecker.py --data configs/fzt.json"
 
 echo "Executing '${command}'..."
