@@ -31,7 +31,7 @@ python3 -m venv .venv
 
 pip3 install -U -r requirements.txt
 
-command="python3 sitechecker.py --data configs/specialized.json"
+command="python3 sitechecker.py --data configs/dell.json"
 
 echo "Executing '${command}'..."
 eval $command
@@ -43,7 +43,7 @@ eval $command
         always {
             archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
-def EMAIL_SUBJECT = "Specialized Bike Available!"
+def EMAIL_SUBJECT = "Dell BIOS Update Available!"
 def EMAIL_CONTENT = """
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>

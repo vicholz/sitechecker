@@ -66,32 +66,34 @@ class SiteChecker(object):
         self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         self.driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": f'{self.data.get("properties").get("useragent")}'})
     
-    def get(self, url):
-        logging.info(f"Getting '{url}'...")
+    def get(self, url, **kwargs):
+        url = os.path.expandvars(url) 
+        logging.debug(f"Getting '{url}'...")
         self.driver.get(url)
-        logging.info(f"Getting '{url}'...DONE!")
+        logging.debug(f"Getting '{url}'...DONE!")
 
-    def post(self, url, headers, data):
-        logging.info(f"Posting to '{url}'...")
+    def post(self, url, headers, data, **kwargs):
+        url = os.path.expandvars(url) 
+        logging.debug(f"Posting to '{url}'...")
         self.driver.request('POST', url, data)
-        logging.info(f"Posting to '{url}'...DONE!")
+        logging.debug(f"Posting to '{url}'...DONE!")
     
-    def find_element(self, selector:str, by=By.ID, timeout:int=10, tries:int=3):
-        logging.info(f"Looking for element '{selector}'...")
+    def find_element(self, selector:str, by=By.ID, timeout:int=10, tries:int=3, **kwargs):
+        logging.debug(f"Looking for element '{selector}'...")
         tries_left = tries
         while tries_left > 0:
             tries_left -= 1
             try:
                 e = self.driver.find_element(by, selector)
-                logging.info(f"Looking for visible element '{selector}'...DONE!")
+                logging.debug(f"Looking for visible element '{selector}'...DONE!")
                 return e
             except:
                 logging.error(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
                 time.sleep(timeout)
         raise TimeoutException(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
     
-    def is_visible(self, selector:str, by=By.ID, timeout:int=10, tries:int=3):
-        logging.info(f"Looking for visible element '{selector}'...")
+    def is_visible(self, selector:str, by=By.ID, timeout:int=10, tries:int=3, **kwargs):
+        logging.debug(f"Looking for visible element '{selector}'...")
         tries_left = tries
         while tries_left > 0:
             tries_left -= 1
@@ -99,15 +101,15 @@ class SiteChecker(object):
                 e = WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located((by, selector)))
                 # waiter = WebDriverWait(self.driver, timeout)
                 # e = waiter.until(EC.visibility_of_element_located(e))
-                logging.info(f"Looking for visible element '{selector}'...DONE!")
+                logging.debug(f"Looking for visible element '{selector}'...DONE!")
                 return e
             except:
                 logging.error(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
                 time.sleep(timeout)
         raise TimeoutException(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
     
-    def is_clickable(self, selector:str, by=By.ID, timeout:int=1, tries:int=3):
-        logging.info(f"Looking for clickable element '{selector}'...")
+    def is_clickable(self, selector:str, by=By.ID, timeout:int=1, tries:int=3, **kwargs):
+        logging.debug(f"Looking for clickable element '{selector}'...")
         tries_left = tries
         while tries_left > 0:
             tries_left -= 1
@@ -115,32 +117,32 @@ class SiteChecker(object):
                 e = WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable((by, selector)))
                 # waiter = WebDriverWait(self.driver, timeout)
                 # waiter.until(EC.element_to_be_clickable((by, selector)))
-                logging.info(f"Looking for clickable element '{selector}'...DONE!")
+                logging.debug(f"Looking for clickable element '{selector}'...DONE!")
                 return e
             except:
                 logging.error(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
                 time.sleep(timeout)
         raise TimeoutException(f"Timed out waiting for element with '{by}': '{selector}' ({tries_left}/{tries} tries left)")
     
-    def has_inner_text(self, element, value):
-        logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...")
+    def has_inner_text(self, element, value, **kwargs):
+        logging.debug(f"Checking element '{element.get('selector')}' has text '{value}'...")
         e = self.is_visible(**element)
         
         if value in e.get_attribute('innerText'):
-            logging.info(f"Checking element '{element.get('selector')}' has text '{value}'...DONE!")
+            logging.debug(f"Checking element '{element.get('selector')}' has text '{value}'...DONE!")
         else:
             error = f"Checking element '{element.get('selector')}' has text '{value}'...NOT FOUND!"
             logging.error(error)
             raise Exception(error)
 
-    def click(self, selector, by, timeout):
-        logging.info(f"Clicking element '{selector}'...")
+    def click(self, selector, by, timeout, **kwargs):
+        logging.debug(f"Clicking element '{selector}'...")
         e = self.is_clickable(selector, by, timeout)
         e.click()
-        logging.info(f"Clicking element '{selector}'...DONE!")
+        logging.debug(f"Clicking element '{selector}'...DONE!")
     
-    def click_and_hold(self, selector, by, timeout, seconds=[1], fail=True):
-        logging.info(f"Clicking and holding element '{selector}'...")
+    def click_and_hold(self, selector, by, timeout, seconds=[1], fail=True, **kwargs):
+        logging.debug(f"Clicking and holding element '{selector}'...")
         try:
             action = ActionChains(self.driver)
             e = self.is_clickable(selector, by, timeout)
@@ -158,84 +160,84 @@ class SiteChecker(object):
                 raise Exception(e)
             else:
                 logging.warning(f"Clicking and holding element '{selector}'...Failed! Skipping!")
-        logging.info(f"Clicking and holding element '{selector}'...DONE!")
+        logging.debug(f"Clicking and holding element '{selector}'...DONE!")
 
-    def send(self, element, value):
-        logging.info(f"Sending value to element '{element.get('selector')}'...")
+    def send(self, element, value, **kwargs):
+        logging.debug(f"Sending value to element '{element.get('selector')}'...")
         e = self.is_clickable(**element)
         e.clear()
         e.send_keys(value)
-        logging.info(f"Sending value to element '{element.get('selector')}'...DONE!")
+        logging.debug(f"Sending value to element '{element.get('selector')}'...DONE!")
 
-    def send_var(self, element, var_name):
-        logging.info(f"Sending '{var_name}' to '{element.get('selector')}'...")
+    def send_var(self, element, var_name, **kwargs):
+        logging.debug(f"Sending '{var_name}' to '{element.get('selector')}'...")
         e = self.is_clickable(**element)
         e.clear()
         e.send_keys(os.environ.get(f"{var_name}", ""))
-        logging.info(f"Sending '{var_name}' to '{element.get('selector')}'...DONE!")
+        logging.debug(f"Sending '{var_name}' to '{element.get('selector')}'...DONE!")
 
-    def export_attrib_value(self, element, attrib, var_name):
-        logging.info(f"Getting element value from '{element.get('selector')}'...")
+    def export_attrib_value(self, element, attrib, var_name, **kwargs):
+        logging.debug(f"Getting element value from '{element.get('selector')}'...")
         value = self.find_element(**element).get_attribute(attrib).strip()
-        logging.info(f"Getting element value from '{element.get('selector')}'...DONE!")
-        logging.info(f"Setting ENV var '{var_name}' = '{value}'...")
+        logging.debug(f"Getting element value from '{element.get('selector')}'...DONE!")
+        logging.debug(f"Setting ENV var '{var_name}' = '{value}'...")
         os.environ[var_name] = value
-        logging.info(f"Setting ENV var '{var_name}' = '{value}'...DONE!")
+        logging.debug(f"Setting ENV var '{var_name}' = '{value}'...DONE!")
 
-    def export_text(self, element, var_name):
-        logging.info(f"Getting element value from '{element.get('selector')}'...")
+    def export_text(self, element, var_name, **kwargs):
+        logging.debug(f"Getting element value from '{element.get('selector')}'...")
         value = self.find_element(**element).get_attribute("innerText").strip()
-        logging.info(f"Getting element value from '{element.get('selector')}'...DONE!")
-        logging.info(f"Setting ENV var '{var_name}' = '{value}'...")
+        logging.debug(f"Getting element value from '{element.get('selector')}'...DONE!")
+        logging.debug(f"Setting ENV var '{var_name}' = '{value}'...")
         os.environ[var_name] = value
-        logging.info(f"Setting ENV var '{var_name}' = '{value}'...DONE!")
+        logging.debug(f"Setting ENV var '{var_name}' = '{value}'...DONE!")
     
-    def write_attrib_value(self, element, attrib, file):
-        logging.info(f"Getting element value from '{element.get('selector')}'...")
+    def write_attrib_value(self, element, attrib, file, **kwargs):
+        logging.debug(f"Getting element value from '{element.get('selector')}'...")
         value = self.find_element(**element).get_attribute(attrib).strip()
-        logging.info(f"Getting element value from '{element.get('selector')}'...DONE!")
-        logging.info(f"Writting '{value}' to '{file}'...")
+        logging.debug(f"Getting element value from '{element.get('selector')}'...DONE!")
+        logging.debug(f"Writting '{value}' to '{file}'...")
         with open(file, "w") as f:
             f.write(value)
             f.close()
         logging.info(f"Writting '{value}' to '{file}'...DONE!")
     
-    def read_file_value(self, element, file, var_name):
-        logging.info(f"Getting element value from '{element.get('selector')}'...")
+    def read_file_value(self, element, file, var_name, **kwargs):
+        logging.debug(f"Getting element value from '{element.get('selector')}'...")
         value = self.find_element(**element).get_attribute(attrib).strip()
-        logging.info(f"Getting element value from '{element.get('selector')}'...DONE!")
-        logging.info(f"Reading file '{file}' to ENV var '{var_name}'...")
+        logging.debug(f"Getting element value from '{element.get('selector')}'...DONE!")
+        logging.debug(f"Reading file '{file}' to ENV var '{var_name}'...")
         with open(file, "r") as f:
             value = f.read()
             f.close()
         os.environ[var_name] = value
-        logging.info(f"Reading file '{file}' to ENV var '{var_name}'...DONE!")
+        logging.debug(f"Reading file '{file}' to ENV var '{var_name}'...DONE!")
 
-    def scroll(self, x=0, y=0):
-        logging.info(f"Scrolling x = {x}, y = {y}...")
+    def scroll(self, x=0, y=0, **kwargs):
+        logging.debug(f"Scrolling x = {x}, y = {y}...")
         self.driver.execute_script(f"window.scrollBy({x},{y})", "")
-        logging.info(f"Scrolling x = {x}, y = {y}...DONE!")
+        logging.debug(f"Scrolling x = {x}, y = {y}...DONE!")
 
-    def sleep(self, seconds=1):
-        logging.info(f"Sleeping for {seconds} seconds...")
+    def sleep(self, seconds=1, **kwargs):
+        logging.debug(f"Sleeping for {seconds} seconds...")
         time.sleep(seconds)
-        logging.info(f"Sleeping for {seconds} seconds...DONE!")
+        logging.debug(f"Sleeping for {seconds} seconds...DONE!")
 
-    def move_mouse(self, x_offset, y_offset):
-        logging.info(f"Moving mouse x = {x_offset}, y = {y_offset}...")
+    def move_mouse(self, x_offset, y_offset, **kwargs):
+        logging.debug(f"Moving mouse x = {x_offset}, y = {y_offset}...")
         action = webdriver.ActionChains(self.driver)
         action.move_by_offset(x_offset, y_offset)
         action.perform()
-        logging.info(f"Moving mouse x = {x_offset}, y = {y_offset}...DONE!")
+        logging.debug(f"Moving mouse x = {x_offset}, y = {y_offset}...DONE!")
     
-    def random_mouse_moves(self, x_max=10, y_max=10):
+    def random_mouse_moves(self, x_max=10, y_max=10, **kwargs):
         x = math.floor(random.random() * x_max) + 1
         y = math.floor(random.random() * y_max) + 1
-        logging.info(f"Moving mouse x = {x}, y = {y}...")
+        logging.debug(f"Moving mouse x = {x}, y = {y}...")
         action = webdriver.ActionChains(self.driver)
         action.move_by_offset(x, y)
         action.perform()
-        logging.info(f"Moving mouse x = {x}, y = {y}...DONE!")
+        logging.debug(f"Moving mouse x = {x}, y = {y}...DONE!")
 
     def execute_task(self, task):
         if not task in list(self.data.get("execution")):
@@ -246,20 +248,19 @@ class SiteChecker(object):
         for action_obj in t:
             action = action_obj.get("action")
             params = dict(action_obj)
+            desc = action_obj.get("desc")
             del params['action']
             if hasattr(self, action) and callable(getattr(self, action)):
-                logging.info(f"[{task}] Executing '{action}'...")
+                logging.info(f"[{task}] Executing action '{action}' - {desc}...")
                 if os.path.exists(f"{task}-{action}-before.png"): os.remove(f"{task}-{action}-before.png")
                 if os.path.exists(f"{task}-{action}-after.png"): os.remove(f"{task}-{action}-after.png")
-                print(self.data.get("tasks"))
-                print(self.data.get("tasks").get(task))
                 task_index = self.data.get("tasks").get(task).index(action_obj)
                 task_name = task.replace(" ", "_")
                 task_action = action.replace(" ", "_")
                 self.driver.save_screenshot(f"screenshots/{task_name}-{task_index:03}-{task_action}-before.png")
                 getattr(self, action)(**params)
                 self.driver.save_screenshot(f"screenshots/{task_name}-{task_index:03}-{task_action}-after.png")
-                logging.info(f"[{task}] Executing '{action}'...DONE!")
+                logging.info(f"[{task}] Executing action '{action}' - {desc}...DONE!")
             else:
                 raise Exception(f"Action method for '{action}' is not defined. Exiting.")
 
