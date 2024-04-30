@@ -30,7 +30,7 @@ eval $command
     }
     post {
         always {
-            archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
+            archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
 def subject = "FZT is in stock!"
 def details = """
