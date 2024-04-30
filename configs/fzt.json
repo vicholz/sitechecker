@@ -5,12 +5,13 @@
                 "action": "get",
                 "url": "https://shop.flipperzero.one/products/flipper-zero-transparent"
             },
+
             {
                 "action": "has_inner_text",
                 "element":{
                     "selector": "span[data-add-to-cart-text]",
                     "by": "css selector",
-                    "timeout": 5
+                    "timeout": 10
                 },
                 "value": "Sold out"
             }
