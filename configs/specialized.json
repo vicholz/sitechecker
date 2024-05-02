@@ -16,7 +16,7 @@
             {
                 "desc": "Check to see if element has expected text",
                 "action": "is_visible",
-                "selector": "//p/span[contains(text(),'Out of Stock Online')]",
+                "selector": "//button[contains(text(),'Out of Stock Online')]",
                 "by": "xpath",
                 "timeout": 10
             }

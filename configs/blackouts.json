@@ -6,14 +6,13 @@
                 "url": "https://www.pge.com/en_US/residential/outages/planning-and-preparedness/safety-and-preparedness/find-your-rotating-outage-block/find-your-rotating-outage-block.page?WT.mc_id=Vanity_rotatingoutages"
             },
             {
-                "action": "write_attrib_value",
+                "action": "has_inner_text",
                 "element":{
-                    "selector": "//th[contains(text(), 'rotating outages listed by block')]/../following-sibling::tr/td/div",
-                    "by": "xpath",
-                    "timeout": 5
+                    "selector": "div.callout",
+                    "by": "css selector",
+                    "timeout": 10
                 },
-                "attrib": "innerText",
-                "file": "BLACKOUTS.txt"
+                "value": "No rotating block outages are planned."
             }
         ]
     },
