@@ -46,8 +46,8 @@ def EMAIL_CONTENT = """
 
 if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
     emailext (
-        subject: subject,
-        body: details,
+        subject: EMAIL_SUBJECT,
+        body: EMAIL_CONTENT,
         to: "${env.EMAIL_DEFAULT}",
         attachmentsPattern: '**/*.png,**/*.log'
     )

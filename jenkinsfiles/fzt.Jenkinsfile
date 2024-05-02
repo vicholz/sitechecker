@@ -32,8 +32,8 @@ eval $command
         always {
             archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
-def subject = "FZT is in stock!"
-def details = """
+def EMAIL_SUBJECT = "FZT is in stock!"
+def EMAIL_CONTENT = """
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
