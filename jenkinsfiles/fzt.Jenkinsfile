@@ -38,14 +38,14 @@ def details = """
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
-// if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
-//     emailext (
-//         subject: subject,
-//         body: details,
-//         to: "${env.EMAIL_DEFAULT}",
-//         attachmentsPattern: '**/*.png,**/*.log'
-//     )
-// }
+if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
+    emailext (
+        subject: subject,
+        body: details,
+        to: "${env.EMAIL_DEFAULT}",
+        attachmentsPattern: '**/*.png,**/*.log'
+    )
+}
             }
         }
     }
