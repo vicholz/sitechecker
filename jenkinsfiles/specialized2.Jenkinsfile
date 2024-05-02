@@ -6,13 +6,19 @@ pipeline {
         timestamps()
     }
     triggers {
-        cron('H */4 * * *')
+        cron('0 H/4 * * *')
     }
     stages {
         stage ('Site Checker - Run') {
             steps {
                 sh '''
 set +x
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+
+export DISPLAY=:0
 
 rm -rf *.log *.png
 
@@ -24,7 +30,12 @@ if [ "${VERBOSE}" == "true" ]; then
     VERBOSE_PARAM="--verbose"
 fi
 
-command="python3 sitechecker.py --data pans.json"
+python3 -m venv .venv
+. .venv/bin/activate
+
+pip3 install -U -r requirements.txt
+
+command="python3 sitechecker.py --data configs/specialized2.json"
 
 echo "Executing '${command}'..."
 eval $command
@@ -34,23 +45,23 @@ eval $command
     }
     post {
         always {
-            archiveArtifacts artifacts: '*.png,**/*.log', fingerprint: true
+            archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
-def subject = "Pans are in stock!"
-def details = """
-<a href='https://www.samsclub.com/p/members-mark-11pc-modern-ceramic-cookware-set/prod26140161'>LINK</a><br>
+def EMAIL_SUBJECT = "Specialized Bike Available!"
+def EMAIL_CONTENT = """
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
-if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
+if ("${currentBuild.currentResult}" != "SUCCESS" || currentBuild.getPreviousBuild().result != currentBuild.currentResult){
     emailext (
-        subject: subject,
-        body: details,
+        subject: EMAIL_SUBJECT,
+        body: EMAIL_CONTENT,
         to: "${env.EMAIL_DEFAULT}",
         attachmentsPattern: '**/*.png,**/*.log'
     )
 }
+
             }
         }
     }

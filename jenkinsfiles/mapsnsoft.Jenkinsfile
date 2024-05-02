@@ -21,6 +21,10 @@ pipeline {
                     sh '''
 set +x
 
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+
 export DISPLAY=:0
 
 rm -rf *.log *.png
@@ -32,11 +36,6 @@ fi
 if [ "${VERBOSE}" == "true" ]; then
     VERBOSE_PARAM="--verbose"
 fi
-
-python3 -m venv .venv
-. .venv/bin/activate
-
-pip3 install -U -r requirements.txt
 
 command="python3 sitechecker.py --data configs/mapsnsoft.json"
 
@@ -57,7 +56,7 @@ def EMAIL_CONTENT = """
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
-if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
+if ("${currentBuild.currentResult}" != "SUCCESS" || currentBuild.getPreviousBuild().result != currentBuild.currentResult){
     emailext (
         subject: EMAIL_SUBJECT,
         body: EMAIL_CONTENT,

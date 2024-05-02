@@ -14,11 +14,11 @@ pipeline {
                 sh '''
 set +x
 
-rm -rf *.log *.png
-
 python3 -m venv .venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
+
+rm -rf *.log *.png
 
 command="python3 sitechecker.py --data configs/fzt.json"
 
@@ -38,10 +38,10 @@ def EMAIL_CONTENT = """
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
-if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
+if ("${currentBuild.currentResult}" != "SUCCESS" || currentBuild.getPreviousBuild().result != currentBuild.currentResult){
     emailext (
-        subject: subject,
-        body: details,
+        subject: EMAIL_SUBJECT,
+        body: EMAIL_CONTENT,
         to: "${env.EMAIL_DEFAULT}",
         attachmentsPattern: '**/*.png,**/*.log'
     )

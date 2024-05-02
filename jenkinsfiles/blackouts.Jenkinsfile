@@ -14,9 +14,13 @@ pipeline {
                 sh '''
 set +x
 
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+
 rm -rf *.log *.png
 
-command="python3 sitechecker.py --data blackouts.json"
+command="python3 sitechecker.py --data configs/blackouts.json"
 echo "Executing '${command}'..."
 eval $command
 
@@ -44,7 +48,7 @@ def EMAIL_CONTENT = """
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
-if ("${currentBuild.currentResult}" != "SUCCESS" && currentBuild.getPreviousBuild().result != currentBuild.currentResult){
+if ("${currentBuild.currentResult}" != "SUCCESS" || currentBuild.getPreviousBuild().result != currentBuild.currentResult){
     emailext (
         subject: EMAIL_SUBJECT,
         body: EMAIL_CONTENT,
