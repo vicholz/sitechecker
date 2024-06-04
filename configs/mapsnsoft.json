@@ -7,6 +7,11 @@
                 "url": "https://www.mapnsoft.com/kia/customer/account/login/#dashboard"
             },
             {
+                "desc": "Wait 60 seconds",
+                "action": "sleep",
+                "seconds": 60
+            },
+            {
                 "desc": "Send username ENV variable value",
                 "action": "send_var",
                 "element": {
