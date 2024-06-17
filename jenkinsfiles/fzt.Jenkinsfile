@@ -18,7 +18,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip3 install -r requirements.txt
 
-rm -rf *.log *.png
+rm -rf **/*.log **/*.png
 
 command="python3 sitechecker.py --data configs/fzt.json"
 

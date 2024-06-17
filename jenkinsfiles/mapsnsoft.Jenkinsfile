@@ -27,7 +27,7 @@ pip3 install -r requirements.txt
 
 export DISPLAY=:0
 
-rm -rf *.log *.png
+rm -rf **/*.log **/*.png
 
 if [ -n "${DATA}" ]; then
     DATA_PARAM="--data ${DATA}"

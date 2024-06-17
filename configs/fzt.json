@@ -6,6 +6,10 @@
                 "url": "https://shop.flipperzero.one/products/flipper-zero-transparent"
             },
             {
+                "action": "sleep",
+                "seconds": 10
+            },
+            {
                 "action": "has_inner_text",
                 "element":{
                     "selector": "button[name='add']",

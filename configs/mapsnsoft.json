@@ -4,12 +4,12 @@
             {
                 "desc": "Get URL",
                 "action": "get",
-                "url": "https://www.mapnsoft.com/kia/customer/account/login/#dashboard"
+                "url": "https://mapnsoft.com/kia/customer/account/login/#dashboard"
             },
             {
-                "desc": "Wait 60 seconds",
+                "desc": "Wait 10 seconds",
                 "action": "sleep",
-                "seconds": 60
+                "seconds": 10
             },
             {
                 "desc": "Send username ENV variable value",
@@ -32,21 +32,24 @@
                 "var_name": "MAPSNSOFT_PASS"
             },
             {
-                "desc": "Click on SEND button",
-                "action": "click",
-                "selector": "#send2",
-                "by": "css selector",
-                "timeout": 10
+                "desc": "Wait 1 seconds",
+                "action": "sleep",
+                "seconds": 1
             },
             {
-                "desc": "Wait 30 seconds",
+                "action": "submit_form",
+                "selector": "#login-form",
+                "by": "css selector"
+            },
+            {
+                "desc": "Wait 10 seconds",
                 "action": "sleep",
-                "seconds": 30
+                "seconds": 10
             },
             {
                 "desc": "Get next URL",
                 "action": "get",
-                "url": "https://www.mapnsoft.com/kia/kia-telluride-2022-us-17-5.html"
+                "url": "https://mapnsoft.com/kia/kia-telluride-2022-us-17-5.html"
             },
             {
                 "desc": "Check SW version",
