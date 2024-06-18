@@ -42,9 +42,9 @@ class SiteChecker(object):
             options.add_argument("--verbose")
         options.add_argument("--no-sandbox")
         options.add_argument("--headless")
-        options.add_argument(f'--user-agent="{self.data.get("properties").get("useragent")}"')
+        #options.add_argument(f'--user-agent="{self.data.get("properties").get("useragent")}"')
+        options.add_argument(f'--user-agent={user_agent}')
         options.add_argument("--disable-blink-features")
-        options.add_argument("--disable-blink-features=AutomationControlled")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--window-size=1920x1080")
         options.add_argument("--window-position=0,0")
@@ -52,7 +52,7 @@ class SiteChecker(object):
         options.add_argument("--disable-infobars")
         #options.add_argument("--disable-extensions")
         #options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', True)
+        #options.add_experimental_option('useAutomationExtension', True)
         #options.binary_location = shutil.which("google-chrome-stable")
         
         service = Service(
