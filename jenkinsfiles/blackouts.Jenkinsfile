@@ -33,19 +33,28 @@ eval $command
             script {
 def EMAIL_SUBJECT = "PG&E Blackouts are coming!"
 def EMAIL_CONTENT = """
+<a href='https://www.pge.com/en_US/residential/outages/planning-and-preparedness/safety-and-preparedness/find-your-rotating-outage-block/find-your-rotating-outage-block.page?WT.mc_id=Vanity_rotatingoutages'>SITE URL</a><br>
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
 if ("${currentBuild.currentResult}" != "SUCCESS" || currentBuild.getPreviousBuild().result != currentBuild.currentResult){
-    emailext (
-        subject: EMAIL_SUBJECT,
-        body: EMAIL_CONTENT,
-        to: "${env.EMAIL_DEFAULT}",
-        attachmentsPattern: '**/*.png,**/*.log'
-    )
+    // emailext (
+    //     subject: EMAIL_SUBJECT,
+    //     body: EMAIL_CONTENT,
+    //     to: "${env.EMAIL_DEFAULT}",
+    //     attachmentsPattern: '**/*.png,**/*.log'
+    // )
+    withCredentials([string(credentialsId: 'GOOGLE_CHAT_TOKEN', variable: 'GOOGLE_CHAT_TOKEN')]) {
+        hangoutsNotify(
+            token: "$GOOGLE_CHAT_TOKEN",
+            threadByJob: true,
+            sameThreadNotification: true,
+            messageFormat: "simple",
+            message: "${CONTENT}",
+        )
+    }
 }
-
             }
         }
     }

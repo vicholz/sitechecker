@@ -50,21 +50,30 @@ eval $command
         always {
             archiveArtifacts artifacts: '**/*.png,**/*.log', fingerprint: true
             script {
-def EMAIL_SUBJECT = "Kia Mapnsoft Update Available!"
-def EMAIL_CONTENT = """
+def SUBJECT = "Kia Mapnsoft Update Available!"
+def CONTENT = """
+<a href='https://mapnsoft.com/kia/customer/account/login/#dashboard'>SITE URL</a><br>
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
 if ("${currentBuild.currentResult}" != "SUCCESS" || currentBuild.getPreviousBuild().result != currentBuild.currentResult){
-    emailext (
-        subject: EMAIL_SUBJECT,
-        body: EMAIL_CONTENT,
-        to: "${env.EMAIL_DEFAULT}",
-        attachmentsPattern: '**/*.png,**/*.log'
-    )
+    // emailext (
+    //     subject: EMAIL_SUBJECT,
+    //     body: EMAIL_CONTENT,
+    //     to: "${env.EMAIL_DEFAULT}",
+    //     attachmentsPattern: '**/*.png,**/*.log'
+    // )
+    withCredentials([string(credentialsId: 'GOOGLE_CHAT_TOKEN', variable: 'GOOGLE_CHAT_TOKEN')]) {
+        hangoutsNotify(
+            token: "$GOOGLE_CHAT_TOKEN",
+            threadByJob: true,
+            sameThreadNotification: true,
+            messageFormat: "simple",
+            message: "${CONTENT}",
+        )
+    }
 }
-
             }
         }
     }

@@ -44,19 +44,28 @@ eval $command
             script {
 def EMAIL_SUBJECT = "Specialized Bike Available!"
 def EMAIL_CONTENT = """
+<a href='https://www.specialized.com/us/en/stumpjumper-evo-elite-alloy/p/199211?color=318420-199211&searchText=96322-4004'>SITE URL</a><br>
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
 """
 
 if ("${currentBuild.currentResult}" != "SUCCESS" || currentBuild.getPreviousBuild().result != currentBuild.currentResult){
-    emailext (
-        subject: EMAIL_SUBJECT,
-        body: EMAIL_CONTENT,
-        to: "${env.EMAIL_DEFAULT}",
-        attachmentsPattern: '**/*.png,**/*.log'
-    )
+    // emailext (
+    //     subject: EMAIL_SUBJECT,
+    //     body: EMAIL_CONTENT,
+    //     to: "${env.EMAIL_DEFAULT}",
+    //     attachmentsPattern: '**/*.png,**/*.log'
+    // )
+    withCredentials([string(credentialsId: 'GOOGLE_CHAT_TOKEN', variable: 'GOOGLE_CHAT_TOKEN')]) {
+        hangoutsNotify(
+            token: "$GOOGLE_CHAT_TOKEN",
+            threadByJob: true,
+            sameThreadNotification: true,
+            messageFormat: "simple",
+            message: "${CONTENT}",
+        )
+    }
 }
-
             }
         }
     }
