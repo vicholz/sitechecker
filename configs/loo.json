@@ -15,9 +15,11 @@
             },
             {
                 "action": "has_inner_text",
-                "selector": "AddToCart",
-                "by": "id",
-                "timeout": 10,
+                "element": {
+                    "selector": "AddToCart",
+                    "by": "id",
+                    "timeout": 10
+                },
                 "value": "Sold Out"
             }
         ]
