@@ -1,0 +1,33 @@
+{
+    "tasks": {
+        "Loo": [
+            {
+                "desc": "get main url",
+                "action": "get",
+                "url": "https://casaleopet.com/products/leo-s-loo-replacement-bladder?variant=42702467465461"
+            },
+            {
+                "desc": "Check to see if element has expected text",
+                "action": "is_visible",
+                "selector": "AddToCart",
+                "by": "id",
+                "timeout": 10
+            },
+            {
+                "action": "has_inner_text",
+                "element": {
+                    "selector": "AddToCart",
+                    "by": "id",
+                    "timeout": 10
+                },
+                "value": "Sold Out"
+            }
+        ]
+    },
+    "execution": [
+        "Loo"
+    ],
+    "properties": {
+        "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
+    }
+}
