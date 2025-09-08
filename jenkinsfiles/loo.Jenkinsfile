@@ -44,6 +44,7 @@ eval $command
             script {
 def EMAIL_SUBJECT = "Loo Floor Available!"
 def EMAIL_CONTENT = """
+<h1>${currentBuild.currentResult}</h1>
 <a href='https://casaleopet.com/products/leo-s-loo-replacement-bladder?variant=42702467465461'>SITE URL</a><br>
 <a href='${env.BUILD_URL}/console'>CONSOLE</a><br>
 <a href='${env.BUILD_URL}/artifact'>ARTIFACTS</a>
