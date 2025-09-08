@@ -51,7 +51,7 @@ if ("${currentBuild.currentResult}" != "SUCCESS" || currentBuild.getPreviousBuil
             threadByJob: true,
             sameThreadNotification: true,
             messageFormat: "simple",
-            message: "${CONTENT}",
+            message: "${EMAIL_CONTENT}",
         )
     }
 }
