@@ -63,7 +63,8 @@ class SiteChecker(object):
         #     options = options
         # )
         
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        #self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        self.driver = webdriver.Chrome(service=service, options=options)
         self.driver.implicitly_wait(1)
         self.verificationErrors = []
         self.accept_next_alert = True
